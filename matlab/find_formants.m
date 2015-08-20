@@ -1,11 +1,11 @@
-function formants = find_formants(audio, Fs, secs, splay)
+function [formants, x] = find_formants(audio, Fs, secs, splay)
 
 %%
 % Use LPC to gather formants
 % Code mostly verbatim from:
 % http://www.mathworks.com/help/signal/ug/formant-estimation-with-lpc-coefficients.html
 %
-% Rounds the formants to the nearest 10, and only returns the first two
+% Rounds the formants to the nearest 10
 % :audio: audio file read in with audioread
 % :Fs:    sample rate for audio file
 % :secs:  position (in seconds) around which to sample data
@@ -84,7 +84,5 @@ for kk = 1:length(frqs)
         nn = nn+1;
     end
 end
-
-formants = formants(1:2);
 
 end

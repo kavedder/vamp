@@ -1,5 +1,3 @@
-clear;
-
 % reseed the random number generator
 rng('shuffle')
 % read in the labels and features
@@ -45,3 +43,7 @@ end
 
 pc_correct = num_correct / test_len * 100;
 fprintf('Identified vowels with %f%% accuracy\n', pc_correct);
+
+num_labels = length(unique(test_labels));
+pc_correct_rand_guess = 100 / num_labels;
+fprintf('There are %d labels, meaning roughly a %f%% at a random guess\n', num_labels, pc_correct_rand_guess);

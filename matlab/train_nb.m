@@ -10,7 +10,7 @@ idx = 1;
 % that we'll look at the formants of
 % if current_seconds = 1.2 and splay = .03, then
 % start = 1.17 and end = 1.23
-splay = .03;
+splay = .06;
 % a list of what I assume to be vowel sounds
 % since all we're doing is finding formants, this is really
 % only a valid vowel detector :-(
@@ -52,17 +52,23 @@ for name_i = 1:length(names)
             if ~any(ismember(vowels, phon))
                 continue
             end
-            % add to the list of labels
-            LABELS(idx, :) = phon;
             
             % now work on the audio data
             secs = vals(i);
             % use LPC to get formants
-            formants = find_formants(dat, Fs, secs, splay);
-            FEATURES(idx, :) = formants;
-            idx = idx + 1;
+            [formants, audio] = find_formants(dat, Fs, secs, splay);
+            % limit to F1 and F2
+            formants = formants(1:2);
+            % real vowel measurements have some limits...
+            if (formants(2) > 0) && (formants(2) < 2500) && (formants(1) < 1000)
+                FEATURES(idx, :) = formants;
+                % add to the list of labels
+                LABELS(idx, :) = phon;
+                idx = idx + 1;
+            end
         end
     end
+    % stop timer
     toc
 end
 
